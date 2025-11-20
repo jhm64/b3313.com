@@ -14,11 +14,27 @@
         <source src="content/background.webm" type="video/webm">
     </video>
 </div>
-<audio id="track" loop muted autoplay>
+<audio id="track" loop autoplay>
   <source src="content/bgm.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio> 
-<div class='unmute' onclick="document.getElementById('track').muted = !document.getElementById('track').muted;$(this).toggleClass('mute')"></div>
+<div class="unmute" onclick="toggleAudio()"></div>
+
+<script>
+function toggleAudio() {
+    const track = document.getElementById('track');
+
+    // If playback hasn't started, try starting it now
+    if (track.paused) {
+        track.play().catch(e => console.log('Autoplay blocked:', e));
+    }
+
+    track.muted = !track.muted;
+    $('.unmute').toggleClass('mute');
+}
+</script>
+
 </html>
+
 
 
