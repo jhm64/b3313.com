@@ -24,17 +24,24 @@
 function toggleAudio() {
     const track = document.getElementById('track');
 
-    // If playback hasn't started, try starting it now
-    if (track.paused) {
-        track.play().catch(e => console.log('Autoplay blocked:', e));
-    }
+    // Try to play first
+    track.play().then(() => {
+        // Once playback is confirmed, toggle mute
+        track.muted = !track.muted;
+        $('.unmute').toggleClass('mute');
+    }).catch(err => {
+        console.log("Autoplay blocked until user interacts:", err);
 
-    track.muted = !track.muted;
-    $('.unmute').toggleClass('mute');
+        // If playback was stopped, try again
+        track.play().then(() => {
+            track.muted = !track.muted;
+            $('.unmute').toggleClass('mute');
+        });
+    });
 }
 </script>
-
 </html>
+
 
 
 
